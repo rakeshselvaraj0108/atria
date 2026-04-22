@@ -44,7 +44,7 @@ export function StressTestSimulator() {
       <div className="w-full">
         {stressTestResult ? (
           <Button 
-            variant="destructive"
+            variant="danger"
             onClick={clearSimulation}
             className="w-full justify-start flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white"
           >
