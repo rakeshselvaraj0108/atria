@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db/database';
 import { VehicleAgent, DecisionContext } from '@/lib/ai/vehicleAgent';
 import { EnvironmentEngine } from '@/lib/simulation/environmentEngine';
+import { findOptimalRoute } from '@/lib/routing/routeOptimization';
 import type { Vehicle, TrafficZone, Incident } from '@/lib/types';
 
 export async function POST(request: NextRequest) {
@@ -118,6 +119,23 @@ export async function POST(request: NextRequest) {
         };
 
         try {
+          // MATHEMATICALLY CALCULATE NEW ROUTE FOR SIMULATION
+          if (v.status === 'in-transit' && v.destination) {
+             try {
+                 const newOptimizedRoute = await findOptimalRoute(
+                     v.location,
+                     v.destination,
+                     zones,
+                     incidents,
+                     environment.weatherSpeedFactor,
+                     v.type as 'truck' | 'van' | 'car'
+                 );
+                 decisionContext.currentRoute = newOptimizedRoute as any;
+             } catch (e) {
+                 console.log(`Simulation routing failed for ${v.id}, using fallback`);
+             }
+          }
+
           const decision = await agent.makeDecision(decisionContext);
           
           let isRerouted = false;
@@ -134,7 +152,7 @@ export async function POST(request: NextRequest) {
 
           if (isRerouted || decision?.action === 'reroute') {
              reroutes++;
-             v.currentRoute = decisionContext.currentRoute;
+             v.currentRoute = decisionContext.currentRoute || v.currentRoute;
              if (decision) decision.action = 'reroute';
           }
 
