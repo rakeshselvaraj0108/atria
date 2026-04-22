@@ -119,13 +119,8 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    // Ensure simulation is running and using latest version
+    // Start simulation if not already running (idempotent - won't restart if already going)
     const { startSimulation } = await import('@/lib/simulation/vehicleSimulation');
-    const globalForSim = globalThis as any;
-    if (globalForSim.simInterval) {
-        clearInterval(globalForSim.simInterval);
-        globalForSim.simInterval = null;
-    }
     startSimulation();
 
     const vehicles = db.getVehicles();

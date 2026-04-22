@@ -408,9 +408,14 @@ class VehicleSimulationEngine {
             }
         }
 
-      // Check if journey complete
-      if (currentIndex >= points.length - 1) {
-        console.log(`🏁 Vehicle ${vehicle.name} reached destination`);
+      // Check if journey complete — EITHER ran out of waypoints OR physically close to destination
+      const distToDestination = this.getDistance(
+        vehicle.location_lat, vehicle.location_lng,
+        vehicle.destination_lat, vehicle.destination_lng
+      );
+      
+      if (currentIndex >= points.length - 1 || distToDestination < 0.002) {
+        console.log(`🏁 Vehicle ${vehicle.name} reached destination (idx=${currentIndex}/${points.length}, dist=${distToDestination.toFixed(5)})`);
         
         let nextDestLat: number, nextDestLng: number;
 
@@ -439,12 +444,16 @@ class VehicleSimulationEngine {
         
         // Change status to idle so the user gets notified and the vehicle stops moving
         db.updateVehicleStatus(vehicle.id, 'idle');
-        db.updateVehicleLocation(vehicle.id, vehicle.location_lat, vehicle.location_lng, 0, 0);
+        // Snap to exact destination coordinates
+        db.updateVehicleLocation(vehicle.id, vehicle.destination_lat, vehicle.destination_lng, 0, 0);
+        // Clear route from DB
+        try { db.updateVehicleRoutes(vehicle.id, null, null); } catch(e) {}
         
         console.log(`🏁 [${vehicle.name}] Destination reached. Switching to IDLE.`);
         
         // Clear the route data so it can be recalculated next time it's deployed
         this.vehicleRoutes.delete(vehicle.id);
+        this.agents.delete(vehicle.id);
         return;
       }
 
