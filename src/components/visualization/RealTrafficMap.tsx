@@ -606,7 +606,7 @@ export function RealTrafficMap({ vehicleFilter = 'all', showIncidents = true }: 
         if(!map.getSource('vehicle-routes')) return;
 
         const routeFeatures: any[] = [];
-        vehicles.forEach(vehicle => {
+        vehicles.forEach((vehicle: any) => {
              if (vehicleFilter !== 'all' && vehicle.type !== vehicleFilter) return;
              // Draw route for all moving vehicles
              if (vehicle.status !== 'in-transit' || !vehicle.currentRoute) return;
@@ -647,7 +647,7 @@ export function RealTrafficMap({ vehicleFilter = 'all', showIncidents = true }: 
         const currentIncidents = incidentMarkersRef.current;
         const validIds = new Set<string>();
 
-        incidents.forEach(incident => {
+        incidents.forEach((incident: any) => {
             if (isNaN(incident.lng) || isNaN(incident.lat)) return;
             validIds.add(incident.id);
             
@@ -783,7 +783,7 @@ export function RealTrafficMap({ vehicleFilter = 'all', showIncidents = true }: 
                 <div className="text-xs text-white/80 font-mono pl-8 drop-shadow-md flex items-center gap-2">
                     LIVE FEED | LAT: {START_LAT} N
                     <Activity className={`h-3 w-3 ${vehicles.length > 0 ? 'text-green-400 animate-pulse' : 'text-gray-400'}`} />
-                    {vehicles.filter(v => v.status === 'in-transit').length} ACTIVE
+                    {vehicles.filter((v: any) => v.status === 'in-transit').length} ACTIVE
                 </div>
             </div>
 

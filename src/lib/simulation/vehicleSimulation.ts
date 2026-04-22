@@ -97,7 +97,7 @@ class VehicleSimulationEngine {
          { name: "Hoskote Cargo Terminal", lat: 13.0722, lng: 77.7896 }
       ];
 
-      for (const vehicle of vehicles) {
+      for (const vehicle of vehicles as any[]) {
           // Implement physical snapping for non-transit states
           if (vehicle.status === 'maintenance') {
               // Snap to nearest Warehouse
@@ -127,7 +127,7 @@ class VehicleSimulationEngine {
 
       console.log(`🔄 Simulating ${transitVehicles.length} vehicles...`);
 
-      for (const vehicle of transitVehicles) {
+      for (const vehicle of transitVehicles as any[]) {
         await this.updateVehicle(vehicle);
       }
       
@@ -561,7 +561,7 @@ class VehicleSimulationEngine {
              } else if (decision && decision.action === 'refuel' && vehicle.status !== 'refueling' && !vehicle.alternative_route_json) {
                  // AI decided to refuel autonomously
                  console.log(`🤖 AI Agent autonomous REFUEL triggered for ${vehicle.name}`);
-                 const nearestStation = db.getNearestFuelStation(currentLat, currentLng);
+                 const nearestStation = db.getNearestFuelStation(vehicle.location_lat, vehicle.location_lng);
                  if (nearestStation) {
                      const resumeState = { type: 'resume', dest: { lat: vehicle.destination_lat, lng: vehicle.destination_lng } };
                      // Save resume state
