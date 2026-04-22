@@ -124,7 +124,7 @@ export function VehicleList() {
                         </button>
                     ))}
                 </div>
-                <Badge variant="outline" className="hidden lg:flex text-xs opacity-50 px-3 py-1 font-mono uppercase tracking-widest bg-black/50">
+                <Badge variant="default" className="hidden lg:flex text-xs opacity-50 px-3 py-1 font-mono uppercase tracking-widest bg-black/50">
                     Live Nodes: {vehicles.length}
                 </Badge>
             </div>
