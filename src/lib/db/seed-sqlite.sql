@@ -43,28 +43,7 @@ INSERT OR IGNORE INTO zones (id, name, center_lat, center_lng, radius_meters, co
 ('ZONE-BTMLY', 'BTM Layout', 12.9165, 77.6101, 1300, 65, 23, 'residential'),
 ('ZONE-AIRPT', 'Kempegowda Airport', 13.1986, 77.7066, 3000, 25, 60, 'highway');
 
--- 10 Demo vehicles traveling between high-traffic areas (from CSV dataset)
-INSERT OR IGNORE INTO vehicles (id, name, type, status, location_lat, location_lng, destination_lat, destination_lng, fuel, cargo_capacity, ai_personality, heading, speed) VALUES
--- Route: Koramangala (High) → Whitefield (High)
-('DEMO-001', 'Koramangala Express', 'truck', 'in-transit', 12.9279, 77.6271, 12.9698, 77.7499, 85, 15000, 'efficient', 75, 28),
--- Route: Whitefield (High) → Hebbal (High)
-('DEMO-002', 'Whitefield Hauler', 'truck', 'in-transit', 12.9698, 77.7499, 13.0358, 77.5970, 72, 18000, 'balanced', 320, 32),
--- Route: M.G. Road (High) → Indiranagar (High)
-('DEMO-003', 'MG Road Transporter', 'van', 'in-transit', 12.9750, 77.6060, 12.9719, 77.6412, 90, 3500, 'aggressive', 65, 42),
--- Route: Silk Board (Congested) → Koramangala (High)
-('DEMO-004', 'Silk Board Carrier', 'truck', 'in-transit', 12.9172, 77.6229, 12.9279, 77.6271, 68, 16000, 'cautious', 30, 22),
--- Route: Indiranagar (High) → M.G. Road (High)
-('DEMO-005', 'Indiranagar Swift', 'car', 'in-transit', 12.9719, 77.6412, 12.9750, 77.6060, 95, 500, 'aggressive', 250, 55),
--- Route: Hebbal (High) → Jayanagar (High)
-('DEMO-006', 'Hebbal Long Haul', 'truck', 'in-transit', 13.0358, 77.5970, 12.9250, 77.5838, 55, 20000, 'efficient', 180, 35),
--- Route: Jayanagar (High) → Electronic City (Medium)
-('DEMO-007', 'Jayanagar Runner', 'van', 'in-transit', 12.9250, 77.5838, 12.8456, 77.6603, 78, 3200, 'balanced', 135, 38),
--- Route: Electronic City → Silk Board (Congested)
-('DEMO-008', 'E-City Shuttle', 'van', 'in-transit', 12.8456, 77.6603, 12.9172, 77.6229, 82, 3000, 'cautious', 350, 30),
--- Route: Koramangala (High) → M.G. Road (High)
-('DEMO-009', 'Koramangala Courier', 'car', 'in-transit', 12.9279, 77.6271, 12.9750, 77.6060, 88, 480, 'aggressive', 315, 48),
--- Route: Whitefield (High) → Indiranagar (High)
-('DEMO-010', 'Tech Park Express', 'car', 'in-transit', 12.9698, 77.7499, 12.9719, 77.6412, 75, 520, 'balanced', 280, 52);
+-- Initial vehicle fleet removed for hackathon (User requested clean slate)
 
 -- Initial incidents (realistic Bangalore traffic scenarios)
 INSERT OR IGNORE INTO incidents (id, type, severity, location_lat, location_lng, affected_radius_meters, status, description, speed_reduction_factor) VALUES

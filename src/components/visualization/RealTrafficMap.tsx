@@ -677,6 +677,7 @@ export function RealTrafficMap({ vehicleFilter = 'all', showIncidents = true }: 
             if (!validIds.has(id)) {
                 marker.remove();
                 currentIncidents.delete(id);
+            }
         });
     }, [incidents, showIncidents, isMapReady]);
 
