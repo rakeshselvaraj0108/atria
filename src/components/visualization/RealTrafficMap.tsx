@@ -544,7 +544,7 @@ export function RealTrafficMap({ vehicleFilter = 'all', showIncidents = true }: 
             const positions = vehiclePositions.current;
             const factor = 0.05; // Smoothing factor
 
-            vehicles.forEach(vehicle => {
+            vehicles.forEach((vehicle: any) => {
                 if (!markers.has(vehicle.id)) return;
                 
                 let target = vehicle.location;
