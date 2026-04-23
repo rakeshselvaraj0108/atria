@@ -240,17 +240,33 @@ export function TrafficProvider({ children }: { children: ReactNode }) {
         return () => clearInterval(interval);
     }, [settings.autoRefresh, settings.refreshInterval, syncData]);
 
-    // ---- Check for alerts ----
+    // ---- Check for congestion alerts every sync ----
+    const [lastAlertedZones, setLastAlertedZones] = useState<Set<string>>(new Set());
     useEffect(() => {
-        if (!settings.congestionAlerts) return;
-        zones.forEach(z => {
-            if (z.congestionLevel >= settings.alertThreshold) {
-                // Only alert occasionally to avoid spam
-                if (Math.random() < 0.01) {
-                    addNotification(`⚠ ${z.area} congestion at ${z.congestionLevel}%`, 'warning');
+        if (!settings.congestionAlerts || zones.length === 0) return;
+        
+        const congestedZones = zones.filter(z => z.congestionLevel >= settings.alertThreshold);
+        const newAlerted = new Set<string>();
+        
+        congestedZones.forEach(z => {
+            newAlerted.add(z.id);
+            // Only notify if this zone wasn't already alerted in the previous cycle
+            if (!lastAlertedZones.has(z.id)) {
+                addNotification(`⚠ ${z.area || z.name} congestion at ${z.congestionLevel}%`, 'warning');
+            }
+        });
+        
+        // Also notify if a zone dropped below threshold (resolved)
+        lastAlertedZones.forEach(id => {
+            if (!newAlerted.has(id)) {
+                const zone = zones.find(z => z.id === id);
+                if (zone) {
+                    addNotification(`✅ ${(zone as any).area || (zone as any).name} congestion eased to ${zone.congestionLevel}%`, 'success');
                 }
             }
         });
+        
+        setLastAlertedZones(newAlerted);
     }, [zones, settings.congestionAlerts, settings.alertThreshold]);
 
     // ---- Computed Stats ----

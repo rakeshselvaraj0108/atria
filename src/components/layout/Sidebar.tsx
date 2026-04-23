@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Activity, LayoutDashboard, Truck, Map as MapIcon, Settings, LogOut, BarChart3 } from 'lucide-react';
+import { Activity, LayoutDashboard, Truck, Map as MapIcon, Settings, LogOut, BarChart3, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { StressTestSimulator } from '@/components/dashboard/StressTestSimulator';
@@ -75,6 +75,29 @@ export function Sidebar() {
                         <BarChart3 className={cn("h-4 w-4 relative z-10", pathname === '/dashboard/analytics' ? "text-cyan-400" : "group-hover:text-white")} />
                         <span className="relative z-10">Analytics</span>
                         <span className="ml-auto relative z-10 text-[9px] px-1.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-400 font-bold">NEW</span>
+                    </div>
+                </Link>
+                {/* Predictive Engine Link */}
+                <Link href="/dashboard/predictions">
+                    <div
+                        className={cn(
+                            'flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium transition-all relative group mt-1',
+                            pathname === '/dashboard/predictions'
+                                ? 'text-white bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 border border-violet-500/20'
+                                : 'text-gray-400 hover:text-white hover:bg-white/5'
+                        )}
+                    >
+                        {pathname === '/dashboard/predictions' && (
+                            <motion.div
+                                layoutId="sidebar-active"
+                                className="absolute inset-0 bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 rounded-lg border border-violet-500/20"
+                                initial={false}
+                                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                            />
+                        )}
+                        <TrendingUp className={cn("h-4 w-4 relative z-10", pathname === '/dashboard/predictions' ? "text-violet-400" : "group-hover:text-white")} />
+                        <span className="relative z-10">Predictions</span>
+                        <span className="ml-auto relative z-10 text-[9px] px-1.5 py-0.5 rounded-full bg-violet-500/20 text-violet-400 font-bold">AI</span>
                     </div>
                 </Link>
             </nav>
